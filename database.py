@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, create_engine, Session
 
-DATABASE_URL = "sqlite:///database.db"
+DATABASE_URL = "fastapi-db.c762asqgy46c.us-east-2.rds.amazonaws.com"
 engine = create_engine(DATABASE_URL, echo=True)
 
 def get_session():
