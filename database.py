@@ -1,7 +1,5 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlmodel import SQLModel, create_engine, Session
 
-# Reemplaza con tus credenciales de RDS
 DB_USER = "postgres"
 DB_PASSWORD = "uide.123"
 DB_HOST = "fastapi-db.c762asqgy46c.us-east-2.rds.amazonaws.com"
@@ -10,15 +8,14 @@ DB_NAME = "fastapi-db"  # o el nombre que le pusiste a la BD
 
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Crea el motor de conexión
+engine = create_engine(DATABASE_URL, echo=True)
 
-Base = declarative_base()
+# Función para inicializar la base de datos (crear tablas)
+def init_db():
+    SQLModel.metadata.create_all(engine)
 
-# Dependencia para usar en tus endpoints de FastAPI
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# Función para obtener sesión en los endpoints
+def get_session():
+    with Session(engine) as session:
+        yield session
