@@ -14,6 +14,10 @@ def on_startup():
 def root():
     return {"message": "API funcionando correctamente"}
 
+@app.get("/test-db")
+def test_db(db=Depends(get_db)):
+    return {"status": "Conexión a RDS exitosa!"}
+
 # Endpoints Usuarios
 @app.post("/usuarios/")
 def crear_usuario(usuario: Usuario, session: Session = Depends(get_session)):
