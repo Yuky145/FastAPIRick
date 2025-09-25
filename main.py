@@ -14,8 +14,9 @@ def on_startup():
 def root():
     return {"message": "API funcionando correctamente"}
 
+# ✅ Cambié get_db por get_session para usar la función correcta
 @app.get("/test-db")
-def test_db(db=Depends(get_db)):
+def test_db(session: Session = Depends(get_session)):
     return {"status": "Conexión a RDS exitosa!"}
 
 # Endpoints Usuarios
