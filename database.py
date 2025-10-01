@@ -3,7 +3,7 @@ import os
 
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASS = os.getenv("DB_PASS", "uide.123")
-DB_HOST = os.getenv("DB_HOST", "ffastapi-db.c9oywsmeizc3.us-west-2.rds.amazonaws.com")
+DB_HOST = os.getenv("DB_HOST", "fastapi-db.c9oywsmeizc3.us-west-2.rds.amazonaws.com")
 DB_PORT = os.getenv("DB_PORT", "5432")
 DB_NAME = os.getenv("DB_NAME", "fastapi-db")
 
