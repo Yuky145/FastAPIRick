@@ -20,3 +20,6 @@ def crear_libro(session: Session, libro: Libro):
 
 def obtener_libros(session: Session):
     return session.exec(select(Libro)).all()
+
+def eliminar_libros(session: Session, libro: Libro):
+    session.delete(libro)

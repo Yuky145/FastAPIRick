@@ -15,3 +15,4 @@ class Libro(SQLModel, table=True):
     usuario_id: Optional[int] = Field(default=None, foreign_key="usuario.id")
 
     usuario: Optional[Usuario] = Relationship(back_populates="libros")
+
