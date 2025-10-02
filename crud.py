@@ -1,25 +1,38 @@
-from sqlmodel import Session, select
-from models import Usuario, Libro
+from sqlmodel import select
+from models import Task, TaskCreate, TaskUpdate
+from sqlmodel import Session
 
-# CRUD para Usuarios
-def crear_usuario(session: Session, usuario: Usuario):
-    session.add(usuario)
+def create_task(session: Session, task_create: TaskCreate) -> Task:
+    task = Task.from_orm(task_create)
+    session.add(task)
     session.commit()
-    session.refresh(usuario)
-    return usuario
+    session.refresh(task)
+    return task
 
-def obtener_usuarios(session: Session):
-    return session.exec(select(Usuario)).all()
+def get_task(session: Session, task_id: int) -> Task | None:
+    return session.get(Task, task_id)
 
-# CRUD para Libros
-def crear_libro(session: Session, libro: Libro):
-    session.add(libro)
+def get_tasks(session: Session) -> list[Task]:
+    statement = select(Task)
+    results = session.exec(statement).all()
+    return results
+
+def update_task(session: Session, task_id: int, task_update: TaskUpdate) -> Task | None:
+    task = session.get(Task, task_id)
+    if not task:
+        return None
+    update_data = task_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(task, key, value)
+    session.add(task)
     session.commit()
-    session.refresh(libro)
-    return libro
+    session.refresh(task)
+    return task
 
-def obtener_libros(session: Session):
-    return session.exec(select(Libro)).all()
-
-def eliminar_libros(session: Session, libro: Libro):
-    session.delete(libro)
+def delete_task(session: Session, task_id: int) -> bool:
+    task = session.get(Task, task_id)
+    if not task:
+        return False
+    session.delete(task)
+    session.commit()
+    return True
