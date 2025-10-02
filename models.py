@@ -1,18 +1,18 @@
+from sqlmodel import SQLModel, Field
 from typing import Optional
-from sqlmodel import SQLModel, Field, Relationship
 
-class Usuario(SQLModel, table=True):
+class TaskBase(SQLModel):
+    title: str
+    description: Optional[str] = None
+    completed: bool = False
+
+class Task(TaskBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    nombre: str
-    email: str
 
-    libros: list["Libro"] = Relationship(back_populates="usuario")
+class TaskCreate(TaskBase):
+    title: str
 
-class Libro(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    titulo: str
-    autor: str
-    usuario_id: Optional[int] = Field(default=None, foreign_key="usuario.id")
-
-    usuario: Optional[Usuario] = Relationship(back_populates="libros")
-
+class TaskUpdate(SQLModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    completed: Optional[bool] = None
